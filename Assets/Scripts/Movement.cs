@@ -9,13 +9,17 @@ public class Movement : MonoBehaviour
     [SerializeField] float rotationForce = 200f;
 
     Rigidbody rb;
+    Movement mvmt;
     Vector2 moveInput;
     bool isThrusting;
+    AudioManager audioManager;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        mvmt = GetComponent<Movement>();
+        audioManager = GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -46,10 +50,15 @@ public class Movement : MonoBehaviour
 
     private void Thrust()
     {
-        if (isThrusting)
+        if (isThrusting && mvmt.enabled)
         {
             Vector3 delta = Vector3.up * thrustForce * Time.deltaTime;
             rb.AddRelativeForce(delta);
+            audioManager.PlayMainEngineThrust();
+        }
+        else
+        {
+            audioManager.Stop();
         }
     }
 }
