@@ -16,24 +16,27 @@ public class AudioManager : MonoBehaviour
 
     public void PlayCrashExplosion()
     {
-        if (audioSource != null && crashExplosion != null)
+        if (audioSource != null && crashExplosion != null && !audioSource.isPlaying)
         {
+            audioSource.volume = 0.182f;
             audioSource.PlayOneShot(crashExplosion);
         }
     }
 
     public void PlayMainEngineThrust()
     {
-        if (audioSource != null && mainEngineThrust != null)
+        if (audioSource != null && mainEngineThrust != null && !audioSource.isPlaying)
         {
+            audioSource.volume = 1f;
             audioSource.PlayOneShot(mainEngineThrust);
         }
     }
 
     public void PlaySuccessfulLanding()
     {
-        if (audioSource != null && successfulLanding != null)
+        if (audioSource != null && successfulLanding != null && !audioSource.isPlaying)
         {
+            audioSource.volume = 0.2f;
             audioSource.PlayOneShot(successfulLanding);
         }
     }

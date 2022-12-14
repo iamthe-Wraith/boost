@@ -5,8 +5,14 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
+    [Header("Force")]
     [SerializeField] float thrustForce = 1000f;
     [SerializeField] float rotationForce = 200f;
+
+    [Header("Particles")]
+    [SerializeField] ParticleSystem leftThrusterParticles;
+    [SerializeField] ParticleSystem rightThrusterParticles;
+    [SerializeField] ParticleSystem mainThrusterParticles;
 
     Rigidbody rb;
     Movement mvmt;
@@ -44,6 +50,30 @@ public class Movement : MonoBehaviour
         rb.freezeRotation = true;
         Vector3 delta = Vector3.forward * rotationForce * -moveInput.x * Time.deltaTime;
         transform.Rotate(delta);
+
+        if (moveInput.x > 0 && !rightThrusterParticles.isPlaying)
+        {
+            rightThrusterParticles.Play();
+        }
+        
+        if (moveInput.x < 0 && !leftThrusterParticles.isPlaying)
+        {
+            leftThrusterParticles.Play();
+        }
+        
+        if (moveInput.x == 0)
+        {
+            if (rightThrusterParticles.isPlaying)
+            {
+                rightThrusterParticles.Stop();
+            }
+
+            if (leftThrusterParticles.isPlaying)
+            {
+                leftThrusterParticles.Stop();
+            }
+        }
+
         rb.freezeRotation = false;
     }
     
@@ -54,10 +84,21 @@ public class Movement : MonoBehaviour
         {
             Vector3 delta = Vector3.up * thrustForce * Time.deltaTime;
             rb.AddRelativeForce(delta);
+            
+            if (!mainThrusterParticles.isPlaying)
+            {
+                mainThrusterParticles.Play();
+            }
+
             audioManager.PlayMainEngineThrust();
         }
         else
         {
+            if (mainThrusterParticles.isPlaying)
+            {
+                mainThrusterParticles.Stop();
+            }
+
             audioManager.Stop();
         }
     }

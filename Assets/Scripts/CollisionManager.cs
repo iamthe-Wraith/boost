@@ -6,7 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class CollisionManager : MonoBehaviour
 {
+    [Header("Config")]
     [SerializeField] float loadLevelDelay = 2f;
+
+    [Header("Particles")]
+    [SerializeField] ParticleSystem successParticles;
+    [SerializeField] ParticleSystem crashParticles;
 
     Movement mvmt;
     AudioManager audioManager;
@@ -45,6 +50,7 @@ public class CollisionManager : MonoBehaviour
         mvmt.enabled = false;
         audioManager.Stop();
         audioManager.PlayCrashExplosion();
+        crashParticles.Play();
         Invoke("ReloadLevel", loadLevelDelay);
     }
     
@@ -54,6 +60,7 @@ public class CollisionManager : MonoBehaviour
         GetComponent<Movement>().enabled = false;
         audioManager.Stop();
         audioManager.PlaySuccessfulLanding();
+        successParticles.Play();
         Invoke("LoadNextLevel", loadLevelDelay);
     }
 
